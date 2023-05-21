@@ -14,7 +14,7 @@ override_ai_prompt:
   - "Please give a detailed account of how every Class, method, decorator, and important variable works in the code and its intention"
   - "Lay everything out so a new developer can really understand what the code is supposed to do"
   - >
-    Use Markdown, assume the file already has a Markdown title and follow the format:
+    Use properly formatted Markdown,  assume the file already has a Markdown title and follow the format:
 
     ## Purpose of file
 
