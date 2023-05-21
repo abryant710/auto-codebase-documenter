@@ -40,6 +40,4 @@ config = {
         
         """,
     ],
-    "ignore_folders": ["venv"],
-    "file_types": [".py"],
 }
