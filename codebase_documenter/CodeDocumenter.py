@@ -20,7 +20,7 @@ class CodebaseDocumenter:
         if not os.path.exists(self.docs_dir):
             os.makedirs(self.docs_dir)
 
-    def get_completion(self, prompt, model="gpt-3.5-turbo"):
+    def _get_completion(self, prompt, model="gpt-3.5-turbo"):
         messages = [{"role": "user", "content": prompt}]
         response = openai.ChatCompletion.create(
             model=model,
@@ -29,7 +29,7 @@ class CodebaseDocumenter:
         )
         return response.choices[0].message["content"]
 
-    def get_file_paths(self):
+    def _get_file_paths(self):
         file_paths = []
         for dirpath, dirnames, filenames in os.walk(self.root_path):
             for ignore_folder in self.ignore_folders:
@@ -44,8 +44,7 @@ class CodebaseDocumenter:
             )
         return file_paths
 
-    def process_file(self, file_path):
-        skip = False
+    def _process_file(self, file_path):
         with open(file_path, "r") as file:
             prompt = file.read()
 
@@ -82,7 +81,7 @@ class CodebaseDocumenter:
 
                 print("## File path\n", file=output)
                 print(file_path, file=output)
-                response = self.get_completion(prompt)
+                response = self._get_completion(prompt)
                 print(response, file=output)
 
                 print(f"Wrote documentation file {output_file}")
@@ -90,10 +89,15 @@ class CodebaseDocumenter:
             return True, "Processed file successfully"
 
     def process_all_files(self):
-        file_paths = self.get_file_paths()
+        file_paths = self._get_file_paths()
         total_files = len(file_paths)
         for i, file_path in enumerate(file_paths):
             print(f"Processing file {i+1}/{total_files}: {file_path}")
-            success, message = self.process_file(file_path)
+            success, message = self._process_file(file_path)
             if not success:
                 print(f"{message} {i+1}/{total_files}: {file_path}")
+
+    def process_single_file(self, file_path):
+        success, message = self._process_file(file_path)
+        if not success:
+            print(f"{message}: {file_path}")
