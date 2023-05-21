@@ -1,7 +1,8 @@
-import openai
-import os
 from datetime import datetime
-from .default_ai_prompt import default_ai_prompt
+import os
+import yaml
+import openai
+from os.path import dirname, abspath
 
 
 class CodebaseDocumenter:
@@ -19,15 +20,31 @@ class CodebaseDocumenter:
         if not os.path.exists(self.docs_dir):
             os.makedirs(self.docs_dir)
 
-        # Load the ai_prompt_text from a text file
+        # Check for config.yaml in the application's root directory
+        parent_dir = dirname(abspath(__file__))  # directory of the current script
+        root_dir = dirname(parent_dir)  # root directory of the application
+
         try:
-            with open(os.path.join(self.base_dir, "ai_prompt_override.py"), "r") as file:
-                self.ai_prompt_text = [line.strip() for line in file.readlines()]
+            with open(os.path.join(root_dir, "config.yaml"), "r") as stream:
+                config_data = yaml.safe_load(stream)
+                self.ai_prompt_text = config_data["override_ai_prompt"]
+                print("Using the prompt override from 'config.yaml'.")
+                print("Custom prompt is set to the following:")
+                print(self.ai_prompt_text)
         except FileNotFoundError:
-            print("Warning: 'ai_prompt_override.py' file not found. Using default prompt.")
+            print("Warning: 'config.yaml' file not found. Using default doc intentions.")
+            from .default_ai_prompt import default_ai_prompt
+
+            self.ai_prompt_text = default_ai_prompt
+        except KeyError:
+            print("Warning: 'override_ai_prompt' key not found in 'config.yaml'. Using default doc intentions.")
+            from .default_ai_prompt import default_ai_prompt
+
             self.ai_prompt_text = default_ai_prompt
         except Exception as e:
-            print(f"Warning: Error reading 'ai_prompt_override.py'. Using default prompt. Error: {str(e)}")
+            print(f"Warning: Error reading 'config.yaml'. Using default doc intentions. Error: {str(e)}")
+            from .default_ai_prompt import default_ai_prompt
+
             self.ai_prompt_text = default_ai_prompt
 
     def _get_completion(self, prompt, model="gpt-3.5-turbo"):
