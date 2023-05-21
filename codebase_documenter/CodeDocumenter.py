@@ -116,12 +116,13 @@ class CodebaseDocumenter:
 
             with open(output_file, "w") as output:
                 # Add timestamp at the top of the file
-                print("# Auto generated documentation file\n", file=output)
+                print("# Auto generated documentation file from codebase-documenter\n", file=output)
                 timestamp = datetime.now().strftime("%d %B %Y at %H:%M:%S")
                 print(f"This documentation file was created on {timestamp}\n", file=output)
 
-                print("## File path\n\n", file=output)
+                print("## File path\n", file=output)
                 print(file_path, file=output)
+                print("\n", file=output)
                 response = self._get_completion(prompt)
                 print(response, file=output)
 
