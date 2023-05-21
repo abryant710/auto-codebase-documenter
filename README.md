@@ -1,16 +1,43 @@
 # Codebase Documenter
 
-Codebase Documenter is a Python-based tool that uses the OpenAI GPT-3.5-turbo or GPT-4 model to assess and document a given codebase.
+Codebase Documenter is a Python-based tool that leverages the power of the OpenAI GPT-3.5-turbo or GPT-4 model to automatically assess and document a codebase.
 
-The tool walks through the directory of your project, ignoring certain directories (like virtual environments), and processes Python files. For each file, it uses the AI model to generate a written assessment of the file and writes the assessment into a `.md` file in a docs directory.
+This tool simplifies the process of documenting your project by walking through the directory of your codebase, selectively ignoring certain directories (such as virtual environments), and processing the Python files found. It harnesses the capabilities of the AI model to generate a comprehensive written assessment of each file. The assessments are then organized and stored in Markdown (`.md`) files within a dedicated `docs` directory.
+
+By automatically analyzing your codebase and providing detailed explanations, suggestions, and insights, the Codebase Documenter facilitates the understanding of your project's structure, purpose, and functionality. The generated documentation can serve as a valuable resource for new developers joining the project or as an aid for code review and refactoring processes.
 
 ## Configuration
 
-Edit the file `config.py` to configure the tool. The following parameters are available:
+Edit the `config.yaml` file to configure the tool. The following parameters are available:
 
-- `docs_intentions`: A list of intentions you want the AI model to follow when theity writes the documentation. This should follow a decent list of prompt items that should get the best out of the AI model.
+- `override_ai_prompt`: A list of intentions you want the AI model to follow when it writes the documentation. This should follow a decent list of prompt items that should get the best out of the AI model.
+
 - `ignore_folders`: A list of directories that you want to exclude from the documentation process.
+
 - `file_types`: A list of file types (by extension) that you want to include in the documentation process.
+
+- `single_file`: A boolean indicating whether a single file should be processed. If True, provide the path to the file. Defaults to False.
+
+- `output_docs_folder_name`: The name of the output docs folder. Defaults to "docs".
+
+Alternatively, these parameters can be passed as command line arguments when running the tool. If command line arguments are provided, they will override the corresponding values in config.yaml.
+
+Here's an example of how your config.yaml could look:
+
+```yaml
+output_docs_folder_name: "docs"
+ignore_folders:
+  - "venv"
+file_types:
+  - ".py"
+single_file: False
+override_ai_prompt:
+  - "You are a highly skilled software engineer and software architect"
+  - "You are analysing another person's code and writing a report on each file in a codebase"
+  - "You will provide feedback for each file and suggest improvements where necessary"
+  - "Please give a detailed account of how every Class, method, decorator, and important variable works in the code and its intention"
+  - "Lay everything out so a new developer can really understand what the code is supposed to do"
+```
 
 ## Setup
 
@@ -54,20 +81,34 @@ Before you start using Codebase Documenter, you need to set up a suitable Python
 
 ## Usage
 
-The easiest way to configure the app using the `config.py` file. Once you have configured the app, you can run it by executing the following command with an argument for the path to the root directory of the codebase you want to document:
+The easiest way to configure the app is by editing the `config.yaml` file. Once you have configured the app, you can run it by executing the following command:
 
 ```bash
-python run.py /home/alex/projects/test_project
+python run.py
 ```
 
-Alternatively, you can use the following code to run the app by importing the CodebaseDocumenter class:
+The command line arguments can also be provided to override the settings in `config.yaml`. For example:
 
 ```bash
+python run.py --codebase_path /home/alex/projects/test_project --ignore_folders venv another_folder --file_types .py .yaml --output_docs_folder_name docs
+```
+
+In the above command:
+
+- `/home/alex/projects/test_project` is the path of the root directory of the codebase that you want to document.
+- `venv another_folder` is a list of directories that you want to exclude from the documentation process.
+- `.py .yaml` is a list of file types that you want to include in the documentation process.
+- `docs` is the name of the output docs folder.
+
+Alternatively, you can use the following code to run the app by importing the `CodebaseDocumenter` class:
+
+```python
 from codebase_documenter import CodebaseDocumenter
 
 documenter = CodebaseDocumenter(
   'your_openai_api_key',
   '/home/alex/projects/test_project',
+  'docs',
   ['venv', 'another_folder'],
   ['.py', '.yaml']
 )
@@ -78,15 +119,21 @@ In the above code:
 
 - Replace `your_openai_api_key` with your actual OpenAI API key.
 - `/home/alex/projects/test_project` is the path of the root directory of the codebase that you want to document.
-- ['venv', 'another_folder'] is a list of directories that you want to exclude from the documentation process.
-- ['.py', '.yaml'] is a list of file types that you want to include in the documentation process.
-  The process_all_files method will start processing the files.
+- `docs` is the name of the output docs folder.
+- `['venv', 'another_folder']` is a list of directories that you want to exclude from the documentation process.
+- `['.py', '.yaml']` is a list of file types that you want to include in the documentation process.
+
+The `process_all_files` method will start processing the files.
 
 ## Output
 
-This tool will create a `docs` directory in the root path of the project. Each processed file will have a corresponding `.md` file in the `docs` directory. The name of the text file is the same as the name of the processed file.
+This tool will create a `docs` directory at the root path of the project or to the location specified by the `output_docs_folder_name` parameter. The structure of the `docs` directory will mimic the structure of your codebase. For each processed file in your codebase, there will be a corresponding `.md` (Markdown) file in the `docs` directory, placed in the same relative location as the original file in the codebase.
 
-Each text file contains an assessment of the code in the file. The assessment is written by the OpenAI model.
+The name of the Markdown file will be the same as the name of the processed file in the codebase, retaining the original file extension as part of the name. For example, if the original file was named `main.py`, the corresponding documentation file will be named `main.py.md`.
+
+Each Markdown file will contain an AI-generated assessment of the code in the corresponding file. The assessment is created using the GPT-4 model from OpenAI and follows the intentions specified in the `override_ai_prompt` parameter in `config.yaml`. It will provide an analysis of the code, suggestions for improvements, and detailed explanations of classes, methods, decorators, and important variables in the file.
+
+The assessment aims to provide comprehensive information that can help a new developer understand the purpose and functionality of the code, as well as areas that could potentially be refactored or optimized.
 
 ## License
 
