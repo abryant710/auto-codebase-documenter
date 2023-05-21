@@ -1,3 +1,8 @@
+ignore_folders:
+  - "venv"
+file_types:
+  - ".py"
+single_file: False
 override_ai_prompt:
   - "You are a highly skilled software engineer and software architect"
   - "You are analysing another persons code and writing a report on each file in a codebase"

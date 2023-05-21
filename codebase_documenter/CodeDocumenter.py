@@ -3,10 +3,11 @@ import os
 import yaml
 import openai
 from os.path import dirname, abspath
+from .default_ai_prompt import default_ai_prompt
 
 
 class CodebaseDocumenter:
-    def __init__(self, openai_api_key, root_path, ignore_folders=["venv"], file_types=[".py"]):
+    def __init__(self, openai_api_key, root_path, ignore_folders=["venv"], file_types=[".py"], single_file=None):
         self.openai_api_key = openai_api_key
         self.root_path = root_path
         self.ignore_folders = ignore_folders
@@ -27,23 +28,23 @@ class CodebaseDocumenter:
         try:
             with open(os.path.join(root_dir, "config.yaml"), "r") as stream:
                 config_data = yaml.safe_load(stream)
-                self.ai_prompt_text = config_data["override_ai_prompt"]
+                self.ai_prompt_text = config_data.get("override_ai_prompt", default_ai_prompt)
+                self.ignore_folders = config_data.get("ignore_folders", ignore_folders)
+                self.file_types = config_data.get("file_types", file_types)
+                self.single_file = config_data.get("single_file", single_file)
                 print("Using the prompt override from 'config.yaml'.")
                 print("Custom prompt is set to the following:")
                 print(self.ai_prompt_text)
         except FileNotFoundError:
             print("Warning: 'config.yaml' file not found. Using default doc intentions.")
-            from .default_ai_prompt import default_ai_prompt
 
             self.ai_prompt_text = default_ai_prompt
         except KeyError:
             print("Warning: 'override_ai_prompt' key not found in 'config.yaml'. Using default doc intentions.")
-            from .default_ai_prompt import default_ai_prompt
 
             self.ai_prompt_text = default_ai_prompt
         except Exception as e:
             print(f"Warning: Error reading 'config.yaml'. Using default doc intentions. Error: {str(e)}")
-            from .default_ai_prompt import default_ai_prompt
 
             self.ai_prompt_text = default_ai_prompt
 
