@@ -1,3 +1,5 @@
+codebase_path: "."
+output_docs_folder_name: "docs"
 ignore_folders:
   - "venv"
 file_types:

@@ -1,17 +1,33 @@
 import os
 import argparse
+import yaml
 from dotenv import load_dotenv
 from codebase_documenter import CodebaseDocumenter
 
 
-def document_code(codebase_path, ignore_folders=None, file_types=None, single_file=False):
+def load_config():
+    # Check for config.yaml in the application's root directory
+    try:
+        with open("config.yaml", "r") as stream:
+            return yaml.safe_load(stream)
+    except FileNotFoundError:
+        print("Warning: 'config.yaml' file not found. Using defaults.")
+        return {}
+    except Exception as e:
+        print(f"Warning: Error reading 'config.yaml'. Using defaults. Error: {str(e)}")
+        return {}
+
+
+def document_code(codebase_path, output_docs_folder_name, ignore_folders, file_types, single_file):
     load_dotenv()  # load .env file
     openai_api_key = os.getenv("OPENAI_KEY")  # get OPENAI_KEY value from .env file
 
     if openai_api_key is None:
         raise ValueError("The OPENAI_KEY environment variable is required to proceed.")
 
-    documenter = CodebaseDocumenter(openai_api_key, codebase_path, ignore_folders, file_types, single_file)
+    documenter = CodebaseDocumenter(
+        openai_api_key, codebase_path, output_docs_folder_name, ignore_folders, file_types, single_file
+    )
 
     if single_file:
         documenter.process_single_file(single_file)
@@ -20,11 +36,21 @@ def document_code(codebase_path, ignore_folders=None, file_types=None, single_fi
 
 
 if __name__ == "__main__":
+    config = load_config()
+
     parser = argparse.ArgumentParser(description="Codebase Documenter.")
-    parser.add_argument("codebase_path", type=str, help="The path to the codebase to document.")
+    parser.add_argument("--codebase_path", type=str, help="The path to the codebase to document.")
+    parser.add_argument("--output_docs_folder_name", type=str, help="The name of the output docs folder.")
     parser.add_argument("--ignore_folders", nargs="+", help="List of folders to ignore.")
     parser.add_argument("--file_types", nargs="+", help="List of file types to document.")
-    parser.add_argument("--single_file", type=str, help="The path to a single file to document.")
+    # parser.add_argument("--single_file", type=str, help="The path to a single file to document.")
     args = parser.parse_args()
 
-    document_code(args.codebase_path, args.ignore_folders, args.file_types, args.single_file)
+    codebase_path = args.codebase_path if args.codebase_path else config.get("codebase_path", ".")
+    ignore_folders = args.ignore_folders if args.ignore_folders else config.get("ignore_folders", ["venv"])
+    file_types = args.file_types if args.file_types else config.get("file_types", [".py"])
+    # single_file = args.single_file if args.single_file else config.get("single_file", False)
+    output_docs_folder_name = (
+        args.output_docs_folder_name if args.output_docs_folder_name else config.get("output_docs_folder_name", "docs")
+    )
+    document_code(codebase_path, output_docs_folder_name, ignore_folders, file_types, False)

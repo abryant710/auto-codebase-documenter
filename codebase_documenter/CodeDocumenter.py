@@ -7,13 +7,22 @@ from .default_ai_prompt import default_ai_prompt
 
 
 class CodebaseDocumenter:
-    def __init__(self, openai_api_key, root_path, ignore_folders=["venv"], file_types=[".py"], single_file=None):
+    def __init__(
+        self,
+        openai_api_key,
+        root_path=".",
+        output_docs_folder_name="docs",
+        ignore_folders=["venv"],
+        file_types=[".py"],
+        single_file=False,
+    ):
         self.openai_api_key = openai_api_key
         self.root_path = root_path
+        self.output_docs_folder_name = output_docs_folder_name
         self.ignore_folders = ignore_folders
         self.file_types = file_types
         self.base_dir = root_path
-        self.docs_dir = os.path.join(self.base_dir, "docs")
+        self.docs_dir = os.path.join(self.base_dir, self.output_docs_folder_name)
 
         openai.api_key = self.openai_api_key
 
@@ -21,6 +30,10 @@ class CodebaseDocumenter:
         if not os.path.exists(self.docs_dir):
             os.makedirs(self.docs_dir)
 
+        # Load config from file
+        self._load_config()
+
+    def _load_config(self):
         # Check for config.yaml in the application's root directory
         parent_dir = dirname(abspath(__file__))  # directory of the current script
         root_dir = dirname(parent_dir)  # root directory of the application
@@ -29,9 +42,9 @@ class CodebaseDocumenter:
             with open(os.path.join(root_dir, "config.yaml"), "r") as stream:
                 config_data = yaml.safe_load(stream)
                 self.ai_prompt_text = config_data.get("override_ai_prompt", default_ai_prompt)
-                self.ignore_folders = config_data.get("ignore_folders", ignore_folders)
-                self.file_types = config_data.get("file_types", file_types)
-                self.single_file = config_data.get("single_file", single_file)
+                self.ignore_folders = config_data.get("ignore_folders", self.ignore_folders)
+                self.file_types = config_data.get("file_types", self.file_types)
+                # self.single_file = config_data.get("single_file", self.single_file)
                 print("Using the prompt override from 'config.yaml'.")
                 print("Custom prompt is set to the following:")
                 print(self.ai_prompt_text)
@@ -107,7 +120,7 @@ class CodebaseDocumenter:
                 timestamp = datetime.now().strftime("%d %B %Y at %H:%M:%S")
                 print(f"This documentation file was created on {timestamp}\n", file=output)
 
-                print("## File path\n", file=output)
+                print("## File path\n\n", file=output)
                 print(file_path, file=output)
                 response = self._get_completion(prompt)
                 print(response, file=output)
@@ -126,6 +139,8 @@ class CodebaseDocumenter:
                 print(f"{message} {i+1}/{total_files}: {file_path}")
 
     def process_single_file(self, file_path):
-        success, message = self._process_file(file_path)
-        if not success:
-            print(f"{message}: {file_path}")
+        print("TODO: Function not implemented yet")
+        exit(1)
+        # success, message = self._process_file(file_path)
+        # if not success:
+        #     print(f"{message}: {file_path}")

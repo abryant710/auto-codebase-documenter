@@ -40,4 +40,5 @@ temp/
 .vscode/
 *.code-workspace
 
-
+# Default output folder when running this program
+docs/
