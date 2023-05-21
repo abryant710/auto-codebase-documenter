@@ -1,8 +1,7 @@
 import openai
 import os
 from datetime import datetime
-
-from codebase_documenter.config import config
+from .default_ai_prompt import default_ai_prompt
 
 
 class CodebaseDocumenter:
@@ -19,6 +18,17 @@ class CodebaseDocumenter:
         # Create the docs folder if it doesn't exist
         if not os.path.exists(self.docs_dir):
             os.makedirs(self.docs_dir)
+
+        # Load the ai_prompt_text from a text file
+        try:
+            with open(os.path.join(self.base_dir, "ai_prompt_override.py"), "r") as file:
+                self.ai_prompt_text = [line.strip() for line in file.readlines()]
+        except FileNotFoundError:
+            print("Warning: 'ai_prompt_override.py' file not found. Using default prompt.")
+            self.ai_prompt_text = default_ai_prompt
+        except Exception as e:
+            print(f"Warning: Error reading 'ai_prompt_override.py'. Using default prompt. Error: {str(e)}")
+            self.ai_prompt_text = default_ai_prompt
 
     def _get_completion(self, prompt, model="gpt-3.5-turbo"):
         messages = [{"role": "user", "content": prompt}]
@@ -51,7 +61,7 @@ class CodebaseDocumenter:
             if not prompt.strip():
                 return False, "Skipping empty file"
 
-            prompt = f"""{'. '.join(config['docs_intentions'])}.
+            prompt = f"""{'. '.join(self.ai_prompt_text)}.
 
             Please assess the following file:
 
