@@ -6,9 +6,10 @@ from auto_codebase_documenter import AutoCodebaseDocumenter
 
 
 def load_config():
-    # Check for documenter_config.yaml in the application's root directory
+    config_file = os.path.join(os.getcwd(), "documenter_config.yaml")
+
     try:
-        with open("auto_codebase_documenter/documenter_config.yaml", "r") as stream:
+        with open(config_file, "r") as stream:
             return yaml.safe_load(stream)
     except FileNotFoundError:
         print("Warning: 'documenter_config.yaml' file not found. Using defaults.")

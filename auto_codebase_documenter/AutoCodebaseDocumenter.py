@@ -44,8 +44,7 @@ class AutoCodebaseDocumenter:
         logging.basicConfig(level=log_level)
 
     def _load_config(self):
-        module_dir = dirname(abspath(__file__))
-        config_file = os.path.join(module_dir, "documenter_config.yaml")
+        config_file = os.path.join(os.getcwd(), "documenter_config.yaml")
         logging.debug(f"Looking for config file at {config_file}")
 
         try:
