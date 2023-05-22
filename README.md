@@ -138,6 +138,33 @@ The name of the Markdown file will be the same as the name of the processed file
 
 Each Markdown file will contain an AI-generated assessment of the code in the corresponding file. The assessment is created using the GPT-4 model from OpenAI and follows the intentions specified in the `override_ai_prompt` parameter in `documenter_config.yaml`. It will provide an analysis of the code, suggestions for improvements, and detailed explanations of classes, methods, decorators, and important variables in the file.
 
+E.g., for this codebase the output will look something like this:
+
+```bash
+├── LICENSE
+├── README.md
+├── auto_codebase_documenter
+│   ├── AutoCodebaseDocumenter.py
+│   ├── __init__.py
+│   ├── auto_documenter.py
+│   └── default_ai_prompt.py
+├── create_dist.sh
+├── docs
+│   ├── auto_codebase_documenter
+│   │   ├── AutoCodebaseDocumenter.py.md
+│   │   ├── auto_documenter.py.md
+│   │   └── default_ai_prompt.py.md
+│   ├── documenter.py.md
+│   ├── format_code.py.md
+│   └── setup.py.md
+├── documenter.py
+├── documenter_config.yaml
+├── format_code.py
+├── requirements.txt
+├── setup.py
+└── tests
+```
+
 The assessment aims to provide comprehensive information that can help a new developer understand the purpose and functionality of the code, as well as areas that could potentially be refactored or optimized.
 
 ## License
