@@ -17,39 +17,6 @@ pip install auto-codebase-documenter
 
 The package is hosted on PyPI and can be found at <https://pypi.org/project/auto-codebase-documenter>. You can visit the link for more information about the package and its available versions.
 
-## Configuration
-
-Edit the `config.yaml` file to configure the tool. The following parameters are available:
-
-- `override_ai_prompt`: A list of intentions you want the AI model to follow when it writes the documentation. This should follow a decent list of prompt items that should get the best out of the AI model.
-
-- `ignore_folders`: A list of directories that you want to exclude from the documentation process.
-
-- `file_types`: A list of file types (by extension) that you want to include in the documentation process.
-
-- `single_file`: A boolean indicating whether a single file should be processed. If True, provide the path to the file. Defaults to False.
-
-- `output_docs_folder_name`: The name of the output docs folder. Defaults to "docs".
-
-Alternatively, these parameters can be passed as command line arguments when running the tool. If command line arguments are provided, they will override the corresponding values in config.yaml.
-
-Here's an example of how your config.yaml could look:
-
-```yaml
-output_docs_folder_name: "docs"
-ignore_folders:
-  - "venv"
-file_types:
-  - ".py"
-single_file: False
-override_ai_prompt:
-  - "You are a highly skilled software engineer and software architect"
-  - "You are analysing another person's code and writing a report on each file in a codebase"
-  - "You will provide feedback for each file and suggest improvements where necessary"
-  - "Please give a detailed account of how every Class, method, decorator, and important variable works in the code and its intention"
-  - "Lay everything out so a new developer can really understand what the code is supposed to do"
-```
-
 ## Setup
 
 Before you start using Auto Codebase Documenter, you need to set up a suitable Python environment. We recommend using a virtual environment (venv). Here's how you can set this up:
@@ -92,49 +59,62 @@ Before you start using Auto Codebase Documenter, you need to set up a suitable P
 
 ## Usage
 
-The easiest way to configure the app is by editing the `config.yaml` file. Once you have configured the app, you can run it by executing the following command:
+### Importing the package
 
-```bash
-python run.py
-```
-
-The command line arguments can also be provided to override the settings in `config.yaml`. For example:
-
-```bash
-python run.py --codebase_path /home/alex/projects/test_project --ignore_folders venv another_folder --file_types .py .yaml --output_docs_folder_name docs
-```
-
-In the above command:
-
-- `/home/alex/projects/test_project` is the path of the root directory of the codebase that you want to document.
-- `venv another_folder` is a list of directories that you want to exclude from the documentation process.
-- `.py .yaml` is a list of file types that you want to include in the documentation process.
-- `docs` is the name of the output docs folder.
-
-Alternatively, you can use the following code to run the app by importing the `AutoCodebaseDocumenter` class:
+The easiest way to use the tool is to create a file called `documenter.py` and add the following code to run the app by importing the `AutoCodebaseDocumenter` class:
 
 ```python
+import os
+from dotenv import load_dotenv
 from auto_codebase_documenter import AutoCodebaseDocumenter
 
-documenter = AutoCodebaseDocumenter(
-  'your_openai_api_key',
-  '/home/alex/projects/test_project',
-  'docs',
-  ['venv', 'another_folder'],
-  ['.py', '.yaml']
-)
+load_dotenv()  # load .env file
+openai_api_key = os.getenv("OPENAI_KEY")  # get OPENAI_KEY value from .env file{}
+
+documenter = AutoCodebaseDocumenter(openai_api_key)
 documenter.process_all_files()
 ```
 
-In the above code:
-
-- Replace `your_openai_api_key` with your actual OpenAI API key.
-- `/home/alex/projects/test_project` is the path of the root directory of the codebase that you want to document.
-- `docs` is the name of the output docs folder.
-- `['venv', 'another_folder']` is a list of directories that you want to exclude from the documentation process.
-- `['.py', '.yaml']` is a list of file types that you want to include in the documentation process.
-
 The `process_all_files` method will start processing the files.
+
+You can add the `config.yaml` into the same folder to customize the tool.
+
+### CLI
+
+TODO: Add CLI usage instructions
+
+## Configuration
+
+Edit the `config.yaml` file to configure the tool. The following parameters are available:
+
+- `override_ai_prompt`: A list of intentions you want the AI model to follow when it writes the documentation. This should follow a decent list of prompt items that should get the best out of the AI model.
+
+- `ignore_folders`: A list of directories that you want to exclude from the documentation process.
+
+- `file_types`: A list of file types (by extension) that you want to include in the documentation process.
+
+- `single_file`: A boolean indicating whether a single file should be processed. If True, provide the path to the file. Defaults to False.
+
+- `output_docs_folder_name`: The name of the output docs folder. Defaults to "docs".
+
+Alternatively, these parameters can be passed as command line arguments when running the tool. If command line arguments are provided, they will override the corresponding values in config.yaml.
+
+Here's an example of how your config.yaml could look:
+
+```yaml
+output_docs_folder_name: "docs"
+ignore_folders:
+  - "venv"
+file_types:
+  - ".py"
+single_file: False
+override_ai_prompt:
+  - "You are a highly skilled software engineer and software architect"
+  - "You are analysing another person's code and writing a report on each file in a codebase"
+  - "You will provide feedback for each file and suggest improvements where necessary"
+  - "Please give a detailed account of how every Class, method, decorator, and important variable works in the code and its intention"
+  - "Lay everything out so a new developer can really understand what the code is supposed to do"
+```
 
 ## Output
 
