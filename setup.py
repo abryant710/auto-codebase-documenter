@@ -10,4 +10,15 @@ setup(
             "auto-codebase-documenter = auto_codebase_documenter.run:main",
         ],
     },
+    author="Alex Bryant",
+    author_email="alexbryant710@gmail.com",
+    description="Automatic codebase documentation tool using OpenAI GPT models",
+    long_description="This tool utilizes OpenAI GPT models to automatically assess and document a codebase by generating written assessments for each file.",
+    long_description_content_type="text/markdown",
+    url="https://github.com/abryant710/auto-codebase-documenter",
+    classifiers=[
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+    ],
 )
