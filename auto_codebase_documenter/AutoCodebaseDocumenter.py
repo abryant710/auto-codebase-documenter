@@ -3,8 +3,7 @@ import os
 import yaml
 import openai
 import logging
-from os.path import dirname, abspath
-from .default_ai_prompt import default_ai_prompt
+from auto_codebase_documenter.default_ai_prompt import default_ai_prompt
 
 
 class AutoCodebaseDocumenter:
