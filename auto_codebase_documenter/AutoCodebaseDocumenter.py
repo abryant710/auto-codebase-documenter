@@ -116,7 +116,7 @@ class AutoCodebaseDocumenter:
 
             with open(output_file, "w") as output:
                 # Add timestamp at the top of the file
-                print("# Auto generated documentation file from codebase-documenter\n", file=output)
+                print("# Auto generated documentation file from auto-codebase-documenter\n", file=output)
                 timestamp = datetime.now().strftime("%d %B %Y at %H:%M:%S")
                 print(f"This documentation file was created on {timestamp}\n", file=output)
 
