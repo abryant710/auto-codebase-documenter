@@ -2,12 +2,12 @@ from setuptools import setup, find_packages
 
 setup(
     name="auto-codebase-documenter",
-    version="0.2",
+    version="0.3",
     packages=find_packages(),
     install_requires=["openai", "python-dotenv"],
     entry_points={
         "console_scripts": [
-            "auto-codebase-documenter = auto_codebase_documenter.run:main",
+            "auto-codebase-documenter = run:document_code",
         ],
     },
     author="Alex Bryant",
@@ -21,4 +21,5 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
+    license="MIT",
 )
