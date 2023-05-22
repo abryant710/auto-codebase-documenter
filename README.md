@@ -88,7 +88,7 @@ Install the package and then run it with:
 auto-codebase-documenter
 ```
 
-Make sure the environment variable `OPENAI_KEY` is set to your OpenAI API key.
+Make sure the environment variable OPENAI_KEY is set to your OpenAI API key.
 
 See the section for Configuration for the best way to configure the tool.
 
@@ -98,21 +98,24 @@ It can be run with the following command line arguments:
 - `--ignore_folders`: A list of directories that you want to exclude from the documentation process. Defaults to ["venv"].
 - `--file_types`: A list of file types (by extension) that you want to include in the documentation process. Defaults to [".py"].
 - `--output_docs_folder_name`: The name of the output docs folder. Defaults to "docs".
+- `--skip_existing`: A boolean indicating whether to skip documentation of files for which documentation already exists. Defaults to False.
+- `--gpt_model`: The name of the OpenAI GPT model to use. Defaults to "gpt-3.5-turbo".
 
 ## Configuration
 
 Edit the `documenter_config.yaml` file to configure the tool. The following parameters are available:
 
-- `codebase_path`: The path to the codebase you want to document. Defaults to the current working directory.
-- `ignore_folders`: A list of directories that you want to exclude from the documentation process.
-- `file_types`: A list of file types (by extension) that you want to include in the documentation process.
-- `output_docs_folder_name`: The name of the output docs folder. Defaults to "docs".
-- `single_file`: A boolean indicating whether a single file should be processed. If True, provide the path to the file. Defaults to False.
-- `override_ai_prompt`: A list of intentions you want the AI model to follow when it writes the documentation. This should follow a decent list of prompt items that should get the best out of the AI model.
+`codebase_path`: The path to the codebase you want to document. Defaults to the current working directory.
+`ignore_folders`: A list of directories that you want to exclude from the documentation process.
+`file_types`: A list of file types (by extension) that you want to include in the documentation process.
+`output_docs_folder_name`: The name of the output docs folder. Defaults to "docs".
+`skip_existing`: A boolean indicating whether to skip documentation of files for which documentation already exists. Defaults to False.
+`gpt_model`: The name of the OpenAI GPT model to use. Defaults to "gpt-3.5-turbo".
+`override_ai_prompt`: A list of intentions you want the AI model to follow when it writes the documentation. This should follow a decent list of prompt items that should get the best out of the AI model.
 
-Alternatively, these parameters can be passed as command line arguments when running the tool. If command line arguments are provided, they will override the corresponding values in documenter_config.yaml.
+Alternatively, these parameters can be passed as command line arguments when running the tool. If command line arguments are provided, they will override the corresponding values in `documenter_config.yaml`.
 
-Here's an example of how your documenter_config.yaml could look:
+Here's an example of how your `documenter_config.yaml` could look:
 
 ```yaml
 codebase_path: "/home/alex/test-project"
@@ -121,7 +124,8 @@ ignore_folders:
   - "venv"
 file_types:
   - ".py"
-single_file: False
+skip_existing: False
+gpt_model: "gpt-3.5-turbo"
 override_ai_prompt:
   - "You are a highly skilled software engineer and software architect"
   - "You are analysing another person's code and writing a report on each file in a codebase"
@@ -166,6 +170,24 @@ E.g., for this codebase the output will look something like this:
 ```
 
 The assessment aims to provide comprehensive information that can help a new developer understand the purpose and functionality of the code, as well as areas that could potentially be refactored or optimized.
+
+## Docker Implementation
+
+To facilitate running the auto-codebase-documenter tool in a Docker container, you can use the provided Dockerfile and docker-compose.yml file.
+
+You can build the container using:
+
+```bash
+bash build_docker.sh
+```
+
+Then you can run the container using:
+
+```bash
+bash run_docker.sh
+```
+
+The scripts will also work in Windows if you convert them to .bat or .ps1 files.
 
 ## License
 
