@@ -2,12 +2,12 @@ from setuptools import setup, find_packages
 
 setup(
     name="auto-codebase-documenter",
-    version="0.8",
+    version="0.9",
     packages=find_packages(),
     install_requires=["openai", "python-dotenv", "PyYAML"],
     entry_points={
         "console_scripts": [
-            "auto-codebase-documenter = auto_codebase_documenter.run:main",
+            "auto-codebase-documenter = auto_codebase_documenter.run:auto_documenter",
         ],
     },
     author="Alex Bryant",
