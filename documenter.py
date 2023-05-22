@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from auto_codebase_documenter import AutoCodebaseDocumenter
+from auto_codebase_documenter.AutoCodebaseDocumenter import AutoCodebaseDocumenter
 
 load_dotenv()  # load .env file
 openai_api_key = os.getenv("OPENAI_KEY")  # get OPENAI_KEY value from .env file{}
