@@ -4,7 +4,18 @@ Auto Codebase Documenter is a Python-based tool that leverages the power of the 
 
 This tool simplifies the process of documenting your project by walking through the directory of your codebase, selectively ignoring certain directories (such as virtual environments), and processing the Python files found. It harnesses the capabilities of the AI model to generate a comprehensive written assessment of each file. The assessments are then organized and stored in Markdown (`.md`) files within a dedicated `docs` directory.
 
-By automatically analyzing your codebase and providing detailed explanations, suggestions, and insights, the Auto Codebase Documenter facilitates the understanding of your project's structure, purpose, and functionality. The generated documentation can serve as a valuable resource for new developers joining the project or as an aid for code review and refactoring processes.
+By automatically analyzing your codebase and providing detailed explanations, suggestions, and insights, the Auto Codebase Documenter facilitates the understanding of your project's structure, purpose, and functionality. The generated documentation can serve as a
+valuable resource for new developers joining the project or as an aid for code review and refactoring processes.
+
+## Installation
+
+You can install `auto-codebase-documenter` using `pip` from the Python Package Index (PyPI).
+
+```bash
+pip install auto-codebase-documenter
+```
+
+The package is hosted on PyPI and can be found at <https://pypi.org/project/auto-codebase-documenter>. You can visit the link for more information about the package and its available versions.
 
 ## Configuration
 
