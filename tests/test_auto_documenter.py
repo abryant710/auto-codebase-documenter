@@ -6,7 +6,9 @@ from auto_codebase_documenter.auto_documenter import AutoCodebaseDocumenter
 class TestAutoCodebaseDocumenter(unittest.TestCase):
     def setUp(self):
         self.documenter = AutoCodebaseDocumenter(
-            openai_api_key="fake_key", root_path=".", output_docs_folder_name="test_docs"
+            openai_api_key="fake_key",
+            root_path=".",
+            output_docs_folder_name="test_docs",
         )
 
     @patch("openai.ChatCompletion.create")
@@ -30,7 +32,9 @@ class TestAutoCodebaseDocumenter(unittest.TestCase):
     @patch("os.path.exists")
     @patch("builtins.open", new_callable=mock_open, read_data="test file content")
     @patch("openai.ChatCompletion.create")
-    def test_process_file(self, mock_openai_chat_completion_create, mock_file, mock_exists):
+    def test_process_file(
+        self, mock_openai_chat_completion_create, mock_file, mock_exists
+    ):
         mock_choice = Mock()
         mock_choice.message = {"role": "assistant", "content": "Test content"}
 
