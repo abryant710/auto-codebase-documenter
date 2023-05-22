@@ -7,7 +7,7 @@ setup(
     install_requires=["openai", "python-dotenv", "PyYAML"],
     entry_points={
         "console_scripts": [
-            "auto-codebase-documenter = auto_codebase_documenter.run:auto_documenter",
+            "auto-codebase-documenter = auto_codebase_documenter.auto_documenter:main",
         ],
     },
     author="Alex Bryant",
