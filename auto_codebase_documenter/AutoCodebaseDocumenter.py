@@ -35,7 +35,7 @@ class AutoCodebaseDocumenter:
 
     def _load_config(self):
         module_dir = dirname(abspath(__file__))
-        config_file = os.path.join(module_dir, "config.yaml")
+        config_file = os.path.join(module_dir, "documenter_config.yaml")
 
         try:
             with open(config_file, "r") as stream:
@@ -44,17 +44,19 @@ class AutoCodebaseDocumenter:
                 self.ignore_folders = config_data.get("ignore_folders", self.ignore_folders)
                 self.file_types = config_data.get("file_types", self.file_types)
                 # self.single_file = config_data.get("single_file", self.single_file)
-                print("Using the prompt override from 'config.yaml'.")
+                print("Using the prompt override from 'documenter_config.yaml'.")
                 print("Custom prompt is set to the following:")
                 print(self.ai_prompt_text)
         except FileNotFoundError:
-            print("Warning: 'config.yaml' file not found. Using default ai prompt config.")
+            print("Warning: 'documenter_config.yaml' file not found. Using default ai prompt config.")
             self.ai_prompt_text = default_ai_prompt
         except KeyError:
-            print("Warning: 'override_ai_prompt' key not found in 'config.yaml'. Using default ai prompt config.")
+            print(
+                "Warning: 'override_ai_prompt' key not found in 'documenter_config.yaml'. Using default ai prompt config."
+            )
             self.ai_prompt_text = default_ai_prompt
         except Exception as e:
-            print(f"Warning: Error reading 'config.yaml'. Using default ai prompt config. Error: {str(e)}")
+            print(f"Warning: Error reading 'documenter_config.yaml'. Using default ai prompt config. Error: {str(e)}")
             self.ai_prompt_text = default_ai_prompt
 
     def _get_completion(self, prompt, model="gpt-3.5-turbo"):

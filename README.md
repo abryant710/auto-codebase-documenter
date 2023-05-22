@@ -77,7 +77,7 @@ documenter.process_all_files()
 
 The `process_all_files` method will start processing the files.
 
-You can add the `config.yaml` into the same folder to customize the tool.
+You can add the `documenter_config.yaml` into the same folder to customize the tool.
 
 ### CLI
 
@@ -85,7 +85,7 @@ TODO: Add CLI usage instructions
 
 ## Configuration
 
-Edit the `config.yaml` file to configure the tool. The following parameters are available:
+Edit the `documenter_config.yaml` file to configure the tool. The following parameters are available:
 
 - `override_ai_prompt`: A list of intentions you want the AI model to follow when it writes the documentation. This should follow a decent list of prompt items that should get the best out of the AI model.
 
@@ -97,9 +97,9 @@ Edit the `config.yaml` file to configure the tool. The following parameters are 
 
 - `output_docs_folder_name`: The name of the output docs folder. Defaults to "docs".
 
-Alternatively, these parameters can be passed as command line arguments when running the tool. If command line arguments are provided, they will override the corresponding values in config.yaml.
+Alternatively, these parameters can be passed as command line arguments when running the tool. If command line arguments are provided, they will override the corresponding values in documenter_config.yaml.
 
-Here's an example of how your config.yaml could look:
+Here's an example of how your documenter_config.yaml could look:
 
 ```yaml
 output_docs_folder_name: "docs"
@@ -122,7 +122,7 @@ This tool will create a `docs` directory at the root path of the project or to t
 
 The name of the Markdown file will be the same as the name of the processed file in the codebase, retaining the original file extension as part of the name. For example, if the original file was named `main.py`, the corresponding documentation file will be named `main.py.md`.
 
-Each Markdown file will contain an AI-generated assessment of the code in the corresponding file. The assessment is created using the GPT-4 model from OpenAI and follows the intentions specified in the `override_ai_prompt` parameter in `config.yaml`. It will provide an analysis of the code, suggestions for improvements, and detailed explanations of classes, methods, decorators, and important variables in the file.
+Each Markdown file will contain an AI-generated assessment of the code in the corresponding file. The assessment is created using the GPT-4 model from OpenAI and follows the intentions specified in the `override_ai_prompt` parameter in `documenter_config.yaml`. It will provide an analysis of the code, suggestions for improvements, and detailed explanations of classes, methods, decorators, and important variables in the file.
 
 The assessment aims to provide comprehensive information that can help a new developer understand the purpose and functionality of the code, as well as areas that could potentially be refactored or optimized.
 

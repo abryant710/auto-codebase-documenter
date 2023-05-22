@@ -4,10 +4,10 @@ setup(
     name="auto-codebase-documenter",
     version="0.3",
     packages=find_packages(),
-    install_requires=["openai", "python-dotenv"],
+    install_requires=["openai", "python-dotenv", "PyYAML"],
     entry_points={
         "console_scripts": [
-            "auto-codebase-documenter = run:document_code",
+            "auto-codebase-documenter = run:main",
         ],
     },
     author="Alex Bryant",
