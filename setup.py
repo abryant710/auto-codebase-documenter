@@ -7,7 +7,7 @@ setup(
     install_requires=["openai", "python-dotenv"],
     entry_points={
         "console_scripts": [
-            "codebase-documenter = codebase_documenter.run:main",
+            "codebase-documenter = auto_codebase_documenter.run:main",
         ],
     },
 )

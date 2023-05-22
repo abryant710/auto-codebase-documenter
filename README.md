@@ -1,10 +1,10 @@
-# Codebase Documenter
+# Auto Codebase Documenter
 
-Codebase Documenter is a Python-based tool that leverages the power of the OpenAI GPT-3.5-turbo or GPT-4 model to automatically assess and document a codebase.
+Auto Codebase Documenter is a Python-based tool that leverages the power of the OpenAI GPT-3.5-turbo or GPT-4 model to automatically assess and document a codebase.
 
 This tool simplifies the process of documenting your project by walking through the directory of your codebase, selectively ignoring certain directories (such as virtual environments), and processing the Python files found. It harnesses the capabilities of the AI model to generate a comprehensive written assessment of each file. The assessments are then organized and stored in Markdown (`.md`) files within a dedicated `docs` directory.
 
-By automatically analyzing your codebase and providing detailed explanations, suggestions, and insights, the Codebase Documenter facilitates the understanding of your project's structure, purpose, and functionality. The generated documentation can serve as a valuable resource for new developers joining the project or as an aid for code review and refactoring processes.
+By automatically analyzing your codebase and providing detailed explanations, suggestions, and insights, the Auto Codebase Documenter facilitates the understanding of your project's structure, purpose, and functionality. The generated documentation can serve as a valuable resource for new developers joining the project or as an aid for code review and refactoring processes.
 
 ## Configuration
 
@@ -41,7 +41,7 @@ override_ai_prompt:
 
 ## Setup
 
-Before you start using Codebase Documenter, you need to set up a suitable Python environment. We recommend using a virtual environment (venv). Here's how you can set this up:
+Before you start using Auto Codebase Documenter, you need to set up a suitable Python environment. We recommend using a virtual environment (venv). Here's how you can set this up:
 
 1. Install Python 3.9.16. You can download it from the official Python website. Make sure to allow the installer to set the PATH variables for you.
 
@@ -100,12 +100,12 @@ In the above command:
 - `.py .yaml` is a list of file types that you want to include in the documentation process.
 - `docs` is the name of the output docs folder.
 
-Alternatively, you can use the following code to run the app by importing the `CodebaseDocumenter` class:
+Alternatively, you can use the following code to run the app by importing the `AutoCodebaseDocumenter` class:
 
 ```python
-from codebase_documenter import CodebaseDocumenter
+from auto_codebase_documenter import AutoCodebaseDocumenter
 
-documenter = CodebaseDocumenter(
+documenter = AutoCodebaseDocumenter(
   'your_openai_api_key',
   '/home/alex/projects/test_project',
   'docs',

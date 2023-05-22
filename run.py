@@ -2,7 +2,7 @@ import os
 import argparse
 import yaml
 from dotenv import load_dotenv
-from codebase_documenter import CodebaseDocumenter
+from auto_codebase_documenter import AutoCodebaseDocumenter
 
 
 def load_config():
@@ -25,7 +25,7 @@ def document_code(codebase_path, output_docs_folder_name, ignore_folders, file_t
     if openai_api_key is None:
         raise ValueError("The OPENAI_KEY environment variable is required to proceed.")
 
-    documenter = CodebaseDocumenter(
+    documenter = AutoCodebaseDocumenter(
         openai_api_key, codebase_path, output_docs_folder_name, ignore_folders, file_types, single_file
     )
 
@@ -38,7 +38,7 @@ def document_code(codebase_path, output_docs_folder_name, ignore_folders, file_t
 if __name__ == "__main__":
     config = load_config()
 
-    parser = argparse.ArgumentParser(description="Codebase Documenter.")
+    parser = argparse.ArgumentParser(description="Auto Codebase Documenter.")
     parser.add_argument("--codebase_path", type=str, help="The path to the codebase to document.")
     parser.add_argument("--output_docs_folder_name", type=str, help="The name of the output docs folder.")
     parser.add_argument("--ignore_folders", nargs="+", help="List of folders to ignore.")

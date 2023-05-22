@@ -6,7 +6,7 @@ from os.path import dirname, abspath
 from .default_ai_prompt import default_ai_prompt
 
 
-class CodebaseDocumenter:
+class AutoCodebaseDocumenter:
     def __init__(
         self,
         openai_api_key,
