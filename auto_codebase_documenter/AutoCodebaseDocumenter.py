@@ -161,8 +161,15 @@ class AutoCodebaseDocumenter:
 
                 print("## File path\n", file=output)
                 print(f"{file_path}\n", file=output)
-                response = self._get_completion(prompt)
-                print(response, file=output)
+
+                try:
+                    response = self._get_completion(prompt)
+                    print(response, file=output)
+                except openai.error.APIConnectionError:
+                    print(
+                        f"Error communicating with OpenAI for file {file_path}. Skipping this file."
+                    )
+                    return False, f"Error processing file {file_path}"
 
                 print(f"Wrote documentation file {output_file}")
 
