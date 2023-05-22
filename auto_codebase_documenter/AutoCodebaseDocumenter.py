@@ -2,6 +2,7 @@ from datetime import datetime
 import os
 import yaml
 import openai
+import logging
 from os.path import dirname, abspath
 from .default_ai_prompt import default_ai_prompt
 
@@ -15,6 +16,7 @@ class AutoCodebaseDocumenter:
         ignore_folders=["venv"],
         file_types=[".py"],
         single_file=False,
+        debug=False,
     ):
         self.openai_api_key = openai_api_key
         self.root_path = root_path
@@ -30,12 +32,21 @@ class AutoCodebaseDocumenter:
         if not os.path.exists(self.docs_dir):
             os.makedirs(self.docs_dir)
 
+        # Set up logging
+        self.debug = debug
+        self._setup_logging()
+
         # Load config from file
         self._load_config()
+
+    def _setup_logging(self):
+        log_level = logging.DEBUG if self.debug else logging.INFO
+        logging.basicConfig(level=log_level)
 
     def _load_config(self):
         module_dir = dirname(abspath(__file__))
         config_file = os.path.join(module_dir, "documenter_config.yaml")
+        logging.debug(f"Looking for config file at {config_file}")
 
         try:
             with open(config_file, "r") as stream:
@@ -43,20 +54,19 @@ class AutoCodebaseDocumenter:
                 self.ai_prompt_text = config_data.get("override_ai_prompt", default_ai_prompt)
                 self.ignore_folders = config_data.get("ignore_folders", self.ignore_folders)
                 self.file_types = config_data.get("file_types", self.file_types)
-                # self.single_file = config_data.get("single_file", self.single_file)
-                print("Using the prompt override from 'documenter_config.yaml'.")
-                print("Custom prompt is set to the following:")
-                print(self.ai_prompt_text)
+                logging.debug("Using the prompt override from 'documenter_config.yaml'.")
+                logging.debug("Custom prompt is set to the following:")
+                logging.debug(self.ai_prompt_text)
         except FileNotFoundError:
-            print("Warning: 'documenter_config.yaml' file not found. Using default ai prompt config.")
+            logging.warning("'documenter_config.yaml' file not found. Using default AI prompt config.")
             self.ai_prompt_text = default_ai_prompt
         except KeyError:
-            print(
-                "Warning: 'override_ai_prompt' key not found in 'documenter_config.yaml'. Using default ai prompt config."
+            logging.warning(
+                "'override_ai_prompt' key not found in 'documenter_config.yaml'. Using default AI prompt config."
             )
             self.ai_prompt_text = default_ai_prompt
         except Exception as e:
-            print(f"Warning: Error reading 'documenter_config.yaml'. Using default ai prompt config. Error: {str(e)}")
+            logging.warning(f"Error reading 'documenter_config.yaml'. Using default AI prompt config. Error: {str(e)}")
             self.ai_prompt_text = default_ai_prompt
 
     def _get_completion(self, prompt, model="gpt-3.5-turbo"):
