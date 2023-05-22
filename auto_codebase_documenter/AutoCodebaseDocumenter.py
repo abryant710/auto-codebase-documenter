@@ -121,7 +121,7 @@ class AutoCodebaseDocumenter:
                 print(f"This documentation file was created on {timestamp}\n", file=output)
 
                 print("## File path\n", file=output)
-                print(file_path, file=output)
+                print(f"{file_path}\n", file=output)
                 response = self._get_completion(prompt)
                 print(response, file=output)
 

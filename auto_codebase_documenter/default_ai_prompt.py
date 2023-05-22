@@ -9,21 +9,17 @@ default_ai_prompt = [
         
         ## Purpose of file
 
-        
         Loads the application configuration etc...
         
         ## Feedback
 
-        
         Feedback about what could be improved and changed goes here...
         
         ## Things to refactor
 
-        
         ### Import: from some_module import some_function
         Purpose: Some description here...
-
-
+        
         ### Class: frameObj
 
         Purpose: Some description here...
