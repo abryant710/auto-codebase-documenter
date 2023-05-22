@@ -15,15 +15,19 @@ class AutoCodebaseDocumenter:
         ignore_folders=["venv"],
         file_types=[".py"],
         single_file=False,
+        skip_existing=False,
         debug=False,
+        gpt_model="gpt-3.5-turbo",
     ):
         self.openai_api_key = openai_api_key
         self.root_path = root_path
         self.output_docs_folder_name = output_docs_folder_name
         self.ignore_folders = ignore_folders
         self.file_types = file_types
-        self.base_dir = root_path
-        self.docs_dir = os.path.join(self.base_dir, self.output_docs_folder_name)
+        self.skip_existing = skip_existing
+        self.gpt_model = gpt_model
+
+        self.docs_dir = os.path.join(self.root_path, self.output_docs_folder_name)
 
         openai.api_key = self.openai_api_key
 
@@ -63,22 +67,14 @@ class AutoCodebaseDocumenter:
         try:
             with open(config_file, "r") as stream:
                 config_data = yaml.safe_load(stream)
-                self.ai_prompt_text = config_data.get(
-                    "override_ai_prompt", default_ai_prompt
-                )
-                self.ignore_folders = config_data.get(
-                    "ignore_folders", self.ignore_folders
-                )
+                self.ai_prompt_text = config_data.get("override_ai_prompt", default_ai_prompt)
+                self.ignore_folders = config_data.get("ignore_folders", self.ignore_folders)
                 self.file_types = config_data.get("file_types", self.file_types)
-                logging.debug(
-                    "Using the prompt override from 'documenter_config.yaml'."
-                )
+                logging.debug("Using the prompt override from 'documenter_config.yaml'.")
                 logging.debug("Custom prompt is set to the following:")
                 logging.debug(self.ai_prompt_text)
         except FileNotFoundError:
-            logging.warning(
-                "'documenter_config.yaml' file not found. Using default AI prompt config."
-            )
+            logging.warning("'documenter_config.yaml' file not found. Using default AI prompt config.")
             self.ai_prompt_text = default_ai_prompt
         except KeyError:
             logging.warning(
@@ -86,15 +82,13 @@ class AutoCodebaseDocumenter:
             )
             self.ai_prompt_text = default_ai_prompt
         except Exception as e:
-            logging.warning(
-                f"Error reading 'documenter_config.yaml'. Using default AI prompt config. Error: {str(e)}"
-            )
+            logging.warning(f"Error reading 'documenter_config.yaml'. Using default AI prompt config. Error: {str(e)}")
             self.ai_prompt_text = default_ai_prompt
 
-    def _get_completion(self, prompt, model="gpt-3.5-turbo"):
+    def _get_completion(self, prompt):
         messages = [{"role": "user", "content": prompt}]
         response = openai.ChatCompletion.create(
-            model=model,
+            model=self.gpt_model,
             messages=messages,
             temperature=0,  # this is the degree of randomness of the model's output
         )
@@ -110,9 +104,7 @@ class AutoCodebaseDocumenter:
                 [
                     os.path.join(dirpath, filename)
                     for filename in filenames
-                    if any(
-                        filename.endswith(file_type) for file_type in self.file_types
-                    )
+                    if any(filename.endswith(file_type) for file_type in self.file_types)
                 ]
             )
         return file_paths
@@ -132,7 +124,7 @@ class AutoCodebaseDocumenter:
             """
 
             # Get the relative path of the file
-            relative_path = os.path.relpath(file_path, self.base_dir)
+            relative_path = os.path.relpath(file_path, self.root_path)
 
             # Create the directory structure in the docs folder
             output_dir = os.path.dirname(os.path.join(self.docs_dir, relative_path))
@@ -144,9 +136,11 @@ class AutoCodebaseDocumenter:
 
             # Check if the file already exists
             if os.path.exists(output_file):
-                print(
-                    f"WARNING: Documentation file {output_file} already exists and will be overwritten."
-                )
+                if self.skip_existing:
+                    print(f"Skipping existing file: {output_file}")
+                    return True, "File already exists, skipping as per configuration"
+                else:
+                    print(f"WARNING: Documentation file {output_file} already exists and will be overwritten.")
 
             with open(output_file, "w") as output:
                 # Add timestamp at the top of the file
@@ -155,9 +149,7 @@ class AutoCodebaseDocumenter:
                     file=output,
                 )
                 timestamp = datetime.now().strftime("%d %B %Y at %H:%M:%S")
-                print(
-                    f"This documentation file was created on {timestamp}\n", file=output
-                )
+                print(f"This documentation file was created on {timestamp}\n", file=output)
 
                 print("## File path\n", file=output)
                 print(f"{file_path}\n", file=output)
@@ -166,9 +158,7 @@ class AutoCodebaseDocumenter:
                     response = self._get_completion(prompt)
                     print(response, file=output)
                 except openai.error.APIConnectionError:
-                    print(
-                        f"Error communicating with OpenAI for file {file_path}. Skipping this file."
-                    )
+                    print(f"Error communicating with OpenAI for file {file_path}. Skipping this file.")
                     return False, f"Error processing file {file_path}"
 
                 print(f"Wrote documentation file {output_file}")
