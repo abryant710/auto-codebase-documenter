@@ -122,7 +122,6 @@ class CodebaseDocumenter:
 
                 print("## File path\n", file=output)
                 print(file_path, file=output)
-                print("\n", file=output)
                 response = self._get_completion(prompt)
                 print(response, file=output)
 

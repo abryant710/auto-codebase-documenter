@@ -2,6 +2,7 @@ codebase_path: "."
 output_docs_folder_name: "docs"
 ignore_folders:
   - "venv"
+  - "temp"
 file_types:
   - ".py"
 single_file: False
@@ -11,26 +12,34 @@ override_ai_prompt:
   - "You will provide feedback for each file and suggest improvements where necessary"
   - "The code is centred around NVIDIA DeepStream integration and the processing of multiple AI models"
   - "The inferencing for some of those models will be sent to NVIDIA Triton Inference server for better performance"
-  - "Please give a detailed account of how every Class, method, decorator, and important variable works in the code and its intention"
+  - "Please give a detailed account of how every import, Class, method, decorator, and important variable works in the code and its intention"
   - "Lay everything out so a new developer can really understand what the code is supposed to do"
   - >
     Use properly formatted Markdown,  assume the file already has a Markdown title and follow the format:
 
     ## Purpose of file
 
+
     Loads the application configuration etc...
 
     ## Feedback
+
 
     Feedback about what could be improved and changed goes here...
 
     ## Things to refactor
 
+
     Mention any unused import, variables, methods, etc., that should be removed. Hightlight possible improvements here in the code, such as optmisations.
 
     ## Components of the file
 
+    ### Import: from some_module import some_function
+    Purpose: Some description here...
+
+
     ### Class: frameObj
+
     Purpose: Some description here...
     Methods: 
         1. __init__ (list vars here...)
@@ -38,8 +47,10 @@ override_ai_prompt:
         2. addObject (list vars here...)
           Something here...
           
-    ### Method: do_something (list vars here...)
-    Purpose: Some description
+    ### Method: some_method (list vars here...)
 
-    ### Variable: HELLO_WOLRD
-    Purpose: Stores some value for etc...
+    Purpose: Some description about what this method does...
+
+    ### Variable: SOME_VARIABLE
+
+    Purpose: Some description about what this variable does...
