@@ -66,13 +66,14 @@ The easiest way to use the tool is to create a file called `documenter.py` and a
 ```python
 import os
 from dotenv import load_dotenv
-from auto_codebase_documenter import AutoCodebaseDocumenter
+from auto_codebase_documenter.AutoCodebaseDocumenter import AutoCodebaseDocumenter
 
 load_dotenv()  # load .env file
 openai_api_key = os.getenv("OPENAI_KEY")  # get OPENAI_KEY value from .env file{}
 
 documenter = AutoCodebaseDocumenter(openai_api_key)
 documenter.process_all_files()
+
 ```
 
 The `process_all_files` method will start processing the files.
@@ -81,7 +82,22 @@ You can add the `documenter_config.yaml` into the same folder to customize the t
 
 ### CLI
 
-TODO: Add CLI usage instructions
+Install the package and then run it with:
+
+```bash
+auto-codebase-documenter
+```
+
+Make sure the environment variable `OPENAI_KEY` is set to your OpenAI API key.
+
+See the section for Configuration for the best way to configure the tool.
+
+It can be run with the following command line arguments:
+
+- `--codebase_path`: The path to the codebase you want to document. Defaults to the current working directory.
+- `--ignore_folders`: A list of directories that you want to exclude from the documentation process. Defaults to ["venv"].
+- `--file_types`: A list of file types (by extension) that you want to include in the documentation process. Defaults to [".py"].
+- `--output_docs_folder_name`: The name of the output docs folder. Defaults to "docs".
 
 ## Configuration
 

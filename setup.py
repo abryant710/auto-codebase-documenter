@@ -22,4 +22,5 @@ setup(
         "Operating System :: OS Independent",
     ],
     license="MIT",
+    platforms=["any"],
 )
