@@ -103,21 +103,19 @@ It can be run with the following command line arguments:
 
 Edit the `documenter_config.yaml` file to configure the tool. The following parameters are available:
 
-- `override_ai_prompt`: A list of intentions you want the AI model to follow when it writes the documentation. This should follow a decent list of prompt items that should get the best out of the AI model.
-
+- `codebase_path`: The path to the codebase you want to document. Defaults to the current working directory.
 - `ignore_folders`: A list of directories that you want to exclude from the documentation process.
-
 - `file_types`: A list of file types (by extension) that you want to include in the documentation process.
-
-- `single_file`: A boolean indicating whether a single file should be processed. If True, provide the path to the file. Defaults to False.
-
 - `output_docs_folder_name`: The name of the output docs folder. Defaults to "docs".
+- `single_file`: A boolean indicating whether a single file should be processed. If True, provide the path to the file. Defaults to False.
+- `override_ai_prompt`: A list of intentions you want the AI model to follow when it writes the documentation. This should follow a decent list of prompt items that should get the best out of the AI model.
 
 Alternatively, these parameters can be passed as command line arguments when running the tool. If command line arguments are provided, they will override the corresponding values in documenter_config.yaml.
 
 Here's an example of how your documenter_config.yaml could look:
 
 ```yaml
+codebase_path: "/home/alex/test-project"
 output_docs_folder_name: "docs"
 ignore_folders:
   - "venv"
@@ -158,11 +156,11 @@ This project is maintained by volunteers and funded by donations from the commun
 
 PayPal: Please send donations to <https://www.paypal.com/paypalme/alexbryant710>
 
-Bitcoin (BTC): Please send Bitcoin donations to the following address: your-btc-address.
+Bitcoin (BTC): Please send Bitcoin donations to the following address: 1tCVgvrfuMT5URsoctRAZQh82o6eqBv6k
 
-Ethereum (ETH): Please send Ethereum donations to the following address: your-eth-address.
+Ethereum (ETH): Please send Ethereum donations to the following address: 0x93f09EaB558c40303FA1e06569a5E4Fca6D84321
 
-Solana (SOL): Please send Solana donations to the following address: your-sol-address.
+Solana (SOL): Please send Solana donations to the following address: C9z9xYUsD3vuHDbfiudzp2gYKy3XcTx62qwDza35V4WE
 
 Donations are completely optional but greatly appreciated. They will be used to pay for server costs, development tools, and coffee for late-night coding sessions!
 
