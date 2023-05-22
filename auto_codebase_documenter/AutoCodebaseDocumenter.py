@@ -34,12 +34,11 @@ class AutoCodebaseDocumenter:
         self._load_config()
 
     def _load_config(self):
-        # Check for config.yaml in the application's root directory
-        parent_dir = dirname(abspath(__file__))  # directory of the current script
-        root_dir = dirname(parent_dir)  # root directory of the application
+        module_dir = dirname(abspath(__file__))
+        config_file = os.path.join(module_dir, "config.yaml")
 
         try:
-            with open(os.path.join(root_dir, "config.yaml"), "r") as stream:
+            with open(config_file, "r") as stream:
                 config_data = yaml.safe_load(stream)
                 self.ai_prompt_text = config_data.get("override_ai_prompt", default_ai_prompt)
                 self.ignore_folders = config_data.get("ignore_folders", self.ignore_folders)
@@ -49,16 +48,13 @@ class AutoCodebaseDocumenter:
                 print("Custom prompt is set to the following:")
                 print(self.ai_prompt_text)
         except FileNotFoundError:
-            print("Warning: 'config.yaml' file not found. Using default doc intentions.")
-
+            print("Warning: 'config.yaml' file not found. Using default ai prompt config.")
             self.ai_prompt_text = default_ai_prompt
         except KeyError:
-            print("Warning: 'override_ai_prompt' key not found in 'config.yaml'. Using default doc intentions.")
-
+            print("Warning: 'override_ai_prompt' key not found in 'config.yaml'. Using default ai prompt config.")
             self.ai_prompt_text = default_ai_prompt
         except Exception as e:
-            print(f"Warning: Error reading 'config.yaml'. Using default doc intentions. Error: {str(e)}")
-
+            print(f"Warning: Error reading 'config.yaml'. Using default ai prompt config. Error: {str(e)}")
             self.ai_prompt_text = default_ai_prompt
 
     def _get_completion(self, prompt, model="gpt-3.5-turbo"):
@@ -116,7 +112,10 @@ class AutoCodebaseDocumenter:
 
             with open(output_file, "w") as output:
                 # Add timestamp at the top of the file
-                print("# Auto generated documentation file from auto-codebase-documenter\n", file=output)
+                print(
+                    "# Auto generated documentation file from auto-codebase-documenter\n",
+                    file=output,
+                )
                 timestamp = datetime.now().strftime("%d %B %Y at %H:%M:%S")
                 print(f"This documentation file was created on {timestamp}\n", file=output)
 
