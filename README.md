@@ -88,7 +88,7 @@ Install the package and then run it with:
 auto-codebase-documenter
 ```
 
-Make sure the environment variable OPENAI_KEY is set to your OpenAI API key.
+Make sure the environment variable `OPENAI_KEY` is set to your OpenAI API key.
 
 See the section for Configuration for the best way to configure the tool.
 
