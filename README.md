@@ -198,19 +198,3 @@ This project is licensed under the MIT License. See the LICENSE file for details
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
-
-## Support
-
-This project is maintained by volunteers and funded by donations from the community. If you find this project useful and would like to support its continued development and maintenance, you can do so by sending a donation to one of the following addresses:
-
-PayPal: Please send donations to <https://www.paypal.com/paypalme/alexbryant710>
-
-Bitcoin (BTC): Please send Bitcoin donations to the following address: 1tCVgvrfuMT5URsoctRAZQh82o6eqBv6k
-
-Ethereum (ETH): Please send Ethereum donations to the following address: 0x93f09EaB558c40303FA1e06569a5E4Fca6D84321
-
-Solana (SOL): Please send Solana donations to the following address: C9z9xYUsD3vuHDbfiudzp2gYKy3XcTx62qwDza35V4WE
-
-Donations are completely optional but greatly appreciated. They will be used to pay for server costs, development tools, and coffee for late-night coding sessions!
-
-Thank you for your support!
